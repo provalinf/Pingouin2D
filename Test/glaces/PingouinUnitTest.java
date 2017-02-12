@@ -57,4 +57,10 @@ public class PingouinUnitTest {
 		pingouin.tuerLePingouin();
 		Assert.assertFalse(pingouin.isVivant());
 	}
+
+	@Test
+	public void testToString() {
+		Pingouin pingouin = new Pingouin(20, 20);
+		Assert.assertEquals("Pingouin :\n - <20.0," + (20 - TAILLE_PINGOUIN) + ".0>\n - <" + (20 - TAILLE_PINGOUIN) + ".0,20.0>", pingouin.toString());
+	}
 }

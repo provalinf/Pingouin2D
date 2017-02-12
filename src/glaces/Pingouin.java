@@ -97,7 +97,7 @@ public class Pingouin {
 	 * @return String
 	 */
 	public String toString() {
-		return "Iceberg :"
+		return "Pingouin :"
 				+ "\n - " + bAg
 				+ "\n - " + hAd;
 	}
