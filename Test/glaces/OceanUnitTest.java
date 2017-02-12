@@ -89,7 +89,7 @@ public class OceanUnitTest {
 	}
 
 	@Test
-	public void testfondre() throws Exception {
+	public void testfondre() {
 		Iceberg2D icebergUn = new Iceberg2D(new Point(6, 1), new Point(1, 5));
 		Iceberg2D icebergDeux = new Iceberg2D(new Point(7, 7), new Point(5, 10));
 
@@ -103,11 +103,8 @@ public class OceanUnitTest {
 		icebergUn.fondre(0.5);
 		icebergDeux.fondre(0.5);
 
-		Assert.assertEquals(icebergUn.coinEnBasAGauche(), icebergs[0].coinEnBasAGauche());
-		Assert.assertEquals(icebergUn.coinEnHautADroite(), icebergs[0].coinEnHautADroite());
-
-		Assert.assertEquals(icebergDeux.coinEnBasAGauche(), icebergs[1].coinEnBasAGauche());
-		Assert.assertEquals(icebergDeux.coinEnHautADroite(), icebergs[1].coinEnHautADroite());
+		Assert.assertEquals(icebergUn.toString(), icebergs[0].toString());
+		Assert.assertEquals(icebergDeux.toString(), icebergs[1].toString());
 	}
 
 	@Test
