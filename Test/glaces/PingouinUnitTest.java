@@ -57,19 +57,4 @@ public class PingouinUnitTest {
 		pingouin.tuerLePingouin();
 		Assert.assertFalse(pingouin.isVivant());
 	}
-
-	@Test
-	public void testCollisionPingouinIceberg() {
-
-	}
-
-	@Test
-	public void testVerifSurfaceMinIce() {
-
-	}
-
-	@Test
-	public void testVerifResteIceberg() {
-
-	}
 }
