@@ -1,54 +1,3 @@
-/*
-package glaces;
-
-*/
-/**
- * Created by Valentin.
- * <p>
- * Génère une chaine de caractère représentative de l'océan
- * pour une vue graphique.
- *
- * @param matriceOcean matrice de l'océan à afficher
- *//*
-
-public class ArcticImage {
-	private int height;
-	private int width;
-
-	public ArcticImage(int width, int height) {
-		this.width = width;
-		this.height = height;
-	}
-
-	public void setColors() {
-		System.out.println("Executer la méthode generateImage(int[][] matriceOcean)");
-	}
-
-	*/
-/**
- * Génère une chaine de caractère représentative de l'océan
- * pour une vue graphique.
- *
- * @param matriceOcean matrice de l'océan à afficher
- *//*
-
-	public void generateImage(int[][] matriceOcean) {
-		System.out.println("\nGénération de l'image de l'Océan\n");
-		for (int[] aMatriceOcean : matriceOcean) {
-			for (int anAMatriceOcean : aMatriceOcean) {
-				System.out.print(anAMatriceOcean == 0 ? "▒" : "█");
-			}
-			System.out.println();
-		}
-		System.out.println("\n");
-	}
-
-	public void fermer() {
-
-	}
-}
-*/
-
 //
 // Source code recreated from a .class file by IntelliJ IDEA
 // (powered by Fernflower decompiler)
@@ -56,12 +5,9 @@ public class ArcticImage {
 
 package glaces;
 
-import java.awt.Component;
-import java.awt.Dimension;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 public class ArcticImage extends JFrame {
 	protected static int OCEAN = 1007296;
@@ -84,11 +30,13 @@ public class ArcticImage extends JFrame {
 	}
 
 	/**
-	 * Déprécié, utiliser plutôt generateImage()
+	 * Déprécié, utiliser generateImage()
+	 *
 	 * @param tab
 	 */
 	public void setColors(int[][] tab) {
-		int largeur = tab.length;
+		System.out.println("Deprecie, la logique ne correspond pas au TP1 ce qui provoque une erreur d'affichage, utiliser generateImage()");
+		/*int largeur = tab.length;
 		int hauteur = tab[0].length;
 		BufferedImage image = new BufferedImage(largeur, hauteur, 1);
 
@@ -116,18 +64,16 @@ public class ArcticImage extends JFrame {
 			}
 		}
 
-		this.jlabel.setIcon(new ImageIcon(image));
+		this.jlabel.setIcon(new ImageIcon(image));*/
 	}
 
 	/**
-	 * Génère une chaine de caractère représentative de l'océan
-	 * pour une vue graphique.
+	 * Génère des pixels de couleur représentatif de l'océan
+	 * pour une représentation graphique.
 	 *
-	 * @param matriceOcean matrice de l'océan à afficher
+	 * @param matriceOcean int[][] : matrice de l'océan à afficher
 	 */
-
 	public void generateImage(int[][] matriceOcean) {
-		System.out.println("\nGénération de l'image de l'Océan\n");
 		BufferedImage image = new BufferedImage(matriceOcean[0].length, matriceOcean.length, 1);
 		for (int i = 0; i < matriceOcean.length; i++) {
 			for (int j = 0; j < matriceOcean[i].length; j++) {

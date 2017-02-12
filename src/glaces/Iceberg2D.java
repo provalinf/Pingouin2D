@@ -1,44 +1,37 @@
 package glaces;
 
-import geometrie.*;
+import geometrie.Point;
 
 public class Iceberg2D {
 
 	private Point enBasAGauche;
 	private Point enHautADroite;
 
+	private boolean capture;
+
 	/**
-	 * @param bg le coin en bas à gauche
-	 * @param hd le coin en haut à droite
-	 *           uniquement en coordonnées positives
+	 * Constructeur
+	 * Les points passés en paramètre doivent être positifs,
+	 * être valides (bg en bas à gauche et hd en haut à droite)
+	 *
+	 * @param bg Point : coin en bas à gauche
+	 * @param hd Point : coin en haut à droite
 	 */
-	public Iceberg2D(Point bg, Point hd) throws Exception {
+	public Iceberg2D(Point bg, Point hd) {
 		verifNegativePoints(bg);
 		verifNegativePoints(hd);
-		if (bg.getAbscisse() < hd.getAbscisse() || bg.getOrdonnee() > hd.getOrdonnee()) {
-			throw new CoordonneesPositionException("Les coordonnées des points sont incorrects. Le premier point doit être en bas à gauche, le second en haut à droite !");
-		}
+		verifPositionPoints(bg, hd);
 
 		enBasAGauche = bg;
 		enHautADroite = hd;
-	}
-
-	/**
-	 * Vérifie si les coordonnées du point sont positives sinon retourne une exception
-	 *
-	 * @param p le point à vérifier
-	 * @throws Exception de type CoordonneesNegativeException
-	 */
-	private void verifNegativePoints(Point p) throws Exception {
-		if (p.getAbscisse() < 0 || p.getOrdonnee() < 0)
-			throw new CoordonneesNegativeException("Les coordonnées négatives ne sont pas autorisées !");
+		capture = false;
 	}
 
 	/**
 	 * Construction par fusion de deux icebergs qui se touchent
 	 *
-	 * @param i1 iceberg n°1
-	 * @param i2 iceberg n°2
+	 * @param i1 Iceberg2D : iceberg n°1
+	 * @param i2 Iceberg2D : iceberg n°2
 	 */
 	public Iceberg2D(Iceberg2D i1, Iceberg2D i2) {
 		Point had1 = i1.coinEnHautADroite();
@@ -77,25 +70,63 @@ public class Iceberg2D {
 		}
 
 		enBasAGauche = new Point(Abscisse, Ordonnee);
-
 	}
 
 	/**
-	 * @return le coin en bas à gauche
+	 * Vérifie si les coordonnées du point sont positives,
+	 * sinon retourne une exception de type AssertionError
+	 *
+	 * @param p Point : celui à vérifier
+	 */
+	private void verifNegativePoints(Point p) {
+		assert (!(p.getAbscisse() < 0 || p.getOrdonnee() < 0)) : "Les coordonnées négatives ne sont pas autorisées !";
+	}
+
+	/**
+	 * Vérifie si les coordonnées des points sont valides,
+	 * le point bg doit être véritablement en bas à gauche et inversement,
+	 * sinon retourne une exception de type AssertionError
+	 *
+	 * @param bg Point : en bas à gauche
+	 * @param hd Point : en haut à droite
+	 */
+	private void verifPositionPoints(Point bg, Point hd) {
+		assert (!(bg.getAbscisse() < hd.getAbscisse() || bg.getOrdonnee() > hd.getOrdonnee())) : "Les coordonnées des points sont incorrects. Le premier point doit être en bas à gauche, le second en haut à droite !";
+	}
+
+	/**
+	 * @return Point : le coin en bas à gauche
 	 */
 	public Point coinEnBasAGauche() {
 		return enBasAGauche;
 	}
 
 	/**
-	 * @return le coin en haut à droite
+	 * @return Point : le coin en haut à droite
 	 */
 	public Point coinEnHautADroite() {
 		return enHautADroite;
 	}
 
 	/**
-	 * @return hauteur
+	 * Retourne l'état de l'iceberg
+	 * s'il est capturé ou non
+	 *
+	 * @return boolean : True : capturé, False : sinon
+	 */
+	public boolean isCapture() {
+		return capture;
+	}
+
+	/**
+	 * Capture l'iceberg
+	 */
+	public void capturer() {
+		capture = true;
+	}
+
+	/**
+	 * @return double : hauteur
 	 */
 	public double hauteur() {
 		/*return Math.abs(enBasAGauche.getAbscisse() - enHautADroite.getAbscisse());*/
@@ -103,7 +134,7 @@ public class Iceberg2D {
 	}
 
 	/**
-	 * @return largeur
+	 * @return double : largeur
 	 */
 	public double largeur() {
 		/*return Math.abs(enHautADroite.getOrdonnee() - enBasAGauche.getOrdonnee());*/
@@ -111,15 +142,17 @@ public class Iceberg2D {
 	}
 
 	/**
-	 * @return surface totale
+	 * @return double surface totale
 	 */
 	public double surface() {
 		return hauteur() * largeur();
 	}
 
 	/**
-	 * @param i
-	 * @return vrai si collision entre les deux icebergs
+	 * Vérification de collision entre deux icebergs
+	 *
+	 * @param i Iceberg2D : second iceberg pour collision
+	 * @return boolean : True : si collision, False : sinon
 	 */
 	public boolean collision(Iceberg2D i) {
 
@@ -130,6 +163,10 @@ public class Iceberg2D {
 			}
 			if (enBasAGauche.getOrdonnee() >= i.coinEnBasAGauche().getOrdonnee() && enBasAGauche.getOrdonnee() <= i.coinEnHautADroite().getOrdonnee()) {
 				System.out.println("Collision point en bas à gauche de this");
+				return true;
+			}
+			if (enBasAGauche.getOrdonnee() <= i.coinEnBasAGauche().getOrdonnee() && enHautADroite.getOrdonnee() >= i.coinEnHautADroite().getOrdonnee()) {
+				System.out.println("Collision par chevauchement type 1");
 				return true;
 			}
 		}
@@ -145,6 +182,13 @@ public class Iceberg2D {
 			}
 		}
 
+		if (enBasAGauche.getAbscisse() >= i.coinEnBasAGauche().getAbscisse() && enHautADroite.getAbscisse() <= i.coinEnHautADroite().getAbscisse()) {
+			if (enBasAGauche.getOrdonnee() >= i.coinEnBasAGauche().getOrdonnee() && enHautADroite.getOrdonnee() <= i.coinEnHautADroite().getOrdonnee()) {
+				System.out.println("Collision par chevauchement type 2");
+				return true;
+			}
+		}
+
 		if (i.coinEnBasAGauche().getAbscisse() <= enBasAGauche.getAbscisse() && i.coinEnBasAGauche().getAbscisse() >= enHautADroite.getAbscisse()) {
 			if (i.coinEnBasAGauche().getOrdonnee() >= enBasAGauche.getOrdonnee() && i.coinEnBasAGauche().getOrdonnee() <= enHautADroite.getOrdonnee()) {
 				System.out.println("Collision de tous les points de i");        // Si ce cas de figure, tous les points de i se situe forcément dans this
@@ -156,30 +200,27 @@ public class Iceberg2D {
 	}
 
 	/**
-	 * @param i
-	 * @return vrai si this est plus volumineux que i
+	 * Compare la taille de deux icebergs
+	 *
+	 * @param i Iceberg2D : second iceberg pour comparaison
+	 * @return boolean : True : si this est le plus volumineux, False : si i est plus volumineux
 	 */
 	public boolean estPlusGrosQue(Iceberg2D i) {
 		return surface() > i.surface();
 	}
 
-	public String toString() {
-		return "Iceberg :"
-				+ "\n - " + enBasAGauche
-				+ "\n - " + enHautADroite;
-	}
-
 	/**
-	 * @return le point au centre de l'iceberg
+	 * @return Point : centre de l'iceberg
 	 */
 	public Point centre() {
 		return new Point(((hauteur() / 2.) + enHautADroite.getAbscisse()), ((largeur() / 2.) + enBasAGauche.getOrdonnee()));
 	}
 
 	/**
-	 * Réduction dans les quatre directions ; le centre ne bouge pas
+	 * Réduction dans les quatre directions
+	 * Centre fixe
 	 *
-	 * @param fr dans ]0..1[ facteur de réduction
+	 * @param fr double : ]0..1[ facteur de réduction (% à supprimer)
 	 */
 	public void fondre(double fr) {
 		if (fr <= 0 || fr >= 1) {
@@ -198,7 +239,7 @@ public class Iceberg2D {
 	/**
 	 * Casser une partie à droite
 	 *
-	 * @param fr dans ]0..1[ facteur de réduction
+	 * @param fr double : ]0..1[ facteur de réduction (% à supprimer)
 	 */
 	public void casserDroite(double fr) {
 		if (fr <= 0 || fr >= 1) {
@@ -211,7 +252,7 @@ public class Iceberg2D {
 	/**
 	 * Casser une partie à gauche
 	 *
-	 * @param fr dans ]0..1[ facteur de réduction
+	 * @param fr double : ]0..1[ facteur de réduction (% à supprimer)
 	 */
 	public void casserGauche(double fr) {
 		if (fr <= 0 || fr >= 1) {
@@ -224,7 +265,7 @@ public class Iceberg2D {
 	/**
 	 * Casser une partie en haut
 	 *
-	 * @param fr dans ]0..1[ facteur de réduction
+	 * @param fr double : ]0..1[ facteur de réduction (% à supprimer)
 	 */
 	public void casserHaut(double fr) {
 		if (fr <= 0 || fr >= 1) {
@@ -237,7 +278,7 @@ public class Iceberg2D {
 	/**
 	 * Casser une partie en bas
 	 *
-	 * @param fr dans ]0..1[ : définit le pourcentage supprimé
+	 * @param fr double : ]0..1[ facteur de réduction (% à supprimer)
 	 */
 	public void casserBas(double fr) {
 		if (fr <= 0 || fr >= 1) {
@@ -245,6 +286,15 @@ public class Iceberg2D {
 			return;
 		}
 		enBasAGauche.deplacer(-hauteur() * fr, 0);
+	}
+
+	/**
+	 * @return String
+	 */
+	public String toString() {
+		return "Iceberg :"
+				+ "\n - " + enBasAGauche
+				+ "\n - " + enHautADroite;
 	}
 
 }
